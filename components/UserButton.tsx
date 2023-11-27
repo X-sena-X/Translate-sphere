@@ -41,7 +41,7 @@ export default function UserButton({ session }: Props) {
             <DropdownMenuContent>
                 <DropdownMenuLabel>{session.user?.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOut}>
+                <DropdownMenuItem onClick={() => signOut()}>
                     Sign out
                 </DropdownMenuItem>
             </DropdownMenuContent>
