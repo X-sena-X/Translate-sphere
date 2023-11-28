@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
     Card,
     CardContent,
@@ -9,10 +9,13 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
+
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import { db } from "@/firebase";
 type Props = { redirect: boolean };
 
 const tiers = [
@@ -34,7 +37,7 @@ const tiers = [
         name: "Pro",
         id: "null",
         href: "#",
-        priceMonthly: "₹699.99",
+        priceMonthly: "₹399.99",
         description: "Unlock the Full Potential with Pro!",
         features: [
             "Unlimited Messages in Chats",
@@ -51,12 +54,42 @@ const tiers = [
 export default function PricingCard({ redirect }: Props) {
     const { data: session } = useSession();
     const router = useRouter();
-
+    const [loading, setLoading] = useState(false);
     const createCheckoutSession = async () => {
-        if (!session) return;
+        if (!session?.user.id) return;
+
         // push a document into firebase
+        setLoading(true);
+
+        const docRef = await addDoc(
+            collection(db, "customers", session.user.id, "checkout_sessions"),
+            {
+                price: "price_1OHJj5SGwkWJmN2o3c4z59B0",
+                success_url: window.location.origin,
+                cancel_url: window.location.origin,
+            }
+        );
 
         // .. stripe extension on firebase will create a checkout sesion
+        return onSnapshot(docRef, (snap) => {
+            const data = snap.data();
+            const url = data?.url;
+            const error = data?.error;
+
+            if (error) {
+                //show an error to your custimer and
+                // inspect yout cloud Function logs in the Firebase console
+
+                alert(`An error occured: ${error.message}`);
+                setLoading(false);
+            }
+
+            if (url) {
+                //we have a stripe checout URL, let's redirect
+                window.location.assign(url);
+                setLoading(false);
+            }
+        });
 
         // redirect user to checkout page
     };
@@ -95,7 +128,11 @@ export default function PricingCard({ redirect }: Props) {
                                     onClick={() => createCheckoutSession()}
                                     className=" bg-white dark:bg-black dark:text-white text-black shadow-md"
                                 >
-                                    Subscribe
+                                    {loading ? (
+                                        <Loader2 className=" animate-spin" />
+                                    ) : (
+                                        "Subscribe"
+                                    )}
                                 </Button>
                             ) : (
                                 <Button

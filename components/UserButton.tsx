@@ -12,6 +12,8 @@ import UserAvatar from "./UserAvatar";
 import { Session } from "next-auth";
 import { Button } from "./ui/button";
 import { signIn, signOut } from "next-auth/react";
+import { useSubscriptionStore } from "@/store/store";
+import { Loader2, StarIcon } from "lucide-react";
 
 type Props = {
     session: Session | null;
@@ -19,6 +21,8 @@ type Props = {
 
 export default function UserButton({ session }: Props) {
     // Subscription listener ....
+    const subscription = useSubscriptionStore((state) => state.subscription);
+
     if (!session)
         return (
             <Button
@@ -38,9 +42,28 @@ export default function UserButton({ session }: Props) {
                     image={session.user?.image!}
                 />
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="text-center">
                 <DropdownMenuLabel>{session.user?.name}</DropdownMenuLabel>
+
                 <DropdownMenuSeparator />
+                {subscription === undefined && (
+                    <DropdownMenuItem>
+                        <Loader2 className=" animate-spin" />
+                    </DropdownMenuItem>
+                )}
+                {subscription?.role === "pro" && (
+                    <>
+                        <DropdownMenuLabel className="text-xs flex items-center justify-center space-x-1 text-[#E935C1] animate-pulse">
+                            <StarIcon fill="#E935C1" />
+                            <p>PRO</p>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                            Manage
+                            {/** ManageAccountButton */}
+                        </DropdownMenuItem>
+                    </>
+                )}
                 <DropdownMenuItem onClick={() => signOut()}>
                     Sign out
                 </DropdownMenuItem>

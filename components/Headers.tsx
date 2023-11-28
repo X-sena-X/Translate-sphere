@@ -6,6 +6,7 @@ import { authOptions } from "@/auth";
 import Link from "next/link";
 import { MessagesSquare } from "lucide-react";
 import CreateChatButton from "./CreateChatButton";
+import UpgradeBanner from "./UpgradeBanner";
 
 type Props = {};
 
@@ -37,6 +38,7 @@ async function Headers({}: Props) {
                 </div>
             </nav>
             {/** upgrade Banner */}
+            <UpgradeBanner />
         </header>
     );
 }

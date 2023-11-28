@@ -1,8 +1,10 @@
+import { authOptions } from "@/auth";
 import { ArrowBigRightDashIcon } from "lucide-react";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
     return (
         <main className="">
             <div className="relative isolate pt-14 dark:bg-gray-900">
