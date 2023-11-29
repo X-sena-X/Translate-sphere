@@ -7,6 +7,7 @@ import Link from "next/link";
 import { MessagesSquare } from "lucide-react";
 import CreateChatButton from "./CreateChatButton";
 import UpgradeBanner from "./UpgradeBanner";
+import LanguageSelect from "./LanguageSelect";
 
 type Props = {};
 
@@ -20,13 +21,14 @@ async function Headers({}: Props) {
                 <Logo />
                 <div className="flex-1 flex items-center justify-end space-x-4">
                     {/** languageSelect */}
+                    <LanguageSelect />
                     {/** Session */}
                     {session ? (
                         <>
                             <Link href={"/chat"} prefetch={false}>
                                 <MessagesSquare />
                             </Link>
-                            <CreateChatButton />
+                            <CreateChatButton isLarge={false} />
                         </>
                     ) : (
                         <Link href="/pricing">Pricing</Link>

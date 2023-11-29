@@ -27,6 +27,38 @@ export const LanguageSupportedmap: Record<LanguageSupported, string> = {
     ar: "Arabic",
 };
 
+const LANGUAGES_IN_FREE = 2;
+
+interface LanguageState {
+    language: LanguageSupported;
+    setLaguage: (language: LanguageSupported) => void;
+    getLaguages: (isPro: boolean) => LanguageSupported[];
+    getNotSupportedLanguages: (isPro: boolean) => LanguageSupported[];
+}
+
+export const useLanguageStore = create<LanguageState>()((set, get) => ({
+    language: "en",
+    setLaguage: (language: LanguageSupported) => set({ language }),
+    getLaguages: (isPro: boolean) => {
+        // if the user is pro, return all supported languages
+        if (isPro)
+            return Object.keys(LanguageSupportedmap) as LanguageSupported[];
+        // if not pro, return only the first two languages
+        return Object.keys(LanguageSupportedmap).slice(
+            0,
+            LANGUAGES_IN_FREE
+        ) as LanguageSupported[];
+    },
+    getNotSupportedLanguages: (isPro: boolean) => {
+        // No unsupported languages for "pro" users.
+        if (isPro) return [];
+        // Excluding the first two supported languages
+        return Object.keys(LanguageSupportedmap).slice(
+            LANGUAGES_IN_FREE
+        ) as LanguageSupported[];
+    },
+}));
+
 interface SubscriptionState {
     subscription: Subscription | null | undefined;
     setSubscription: (subscription: Subscription | null) => void;
