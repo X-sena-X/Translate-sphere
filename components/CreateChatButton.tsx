@@ -7,8 +7,12 @@ import { useSession } from "next-auth/react";
 import { useToast } from "./ui/use-toast";
 import { useSubscriptionStore } from "@/store/store";
 import { v4 as uuidv4 } from "uuid";
-import { serverTimestamp, setDoc } from "firebase/firestore";
-import { addChatRef } from "@/lib/converters/ChatMembers";
+import { getDocs, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+    addChatRef,
+    chatMembersCollectionGroupRef,
+} from "@/lib/converters/ChatMembers";
+import { ToastAction } from "./ui/toast";
 
 type Props = {
     isLarge: boolean;
@@ -33,6 +37,31 @@ export default function CreateChatButton({ isLarge }: Props) {
         });
 
         // TODO: ckeck if user is pro and limit them creating a new chat
+        const noOfChats = (
+            await getDocs(chatMembersCollectionGroupRef(session.user.id))
+        ).docs.map((doc) => doc.data()).length;
+        const isPro =
+            subscription?.role === "pro" && subscription.status === "active";
+
+        if (!isPro && noOfChats >= 3) {
+            toast({
+                title: "Free Plan limit exceeded",
+                description:
+                    "You've exceeded the limit of chats for the FREE plan. Please upgrade your plan.",
+                variant: "destructive",
+                action: (
+                    <ToastAction
+                        altText="Upgrade"
+                        onClick={() => router.push("/register")}
+                    >
+                        Upgrade to PRO
+                    </ToastAction>
+                ),
+            });
+            setLoading(false);
+            return;
+        }
+
         const chatId = uuidv4();
         await setDoc(addChatRef(chatId, session.user.id), {
             userId: session.user.id!,
