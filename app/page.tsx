@@ -3,6 +3,7 @@ import { ArrowBigRightDashIcon } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 export default async function Home() {
     return (
@@ -78,6 +79,58 @@ export default async function Home() {
                         ></div>
                     </div>
                 </div>
+                <div className="w-screen h-fit flex flex-col items-center lg:mt-20 gap-y-10 mb-14 pt-10">
+                    <Badge className="w-fit flex gap-x-2 dark:bg-black  bg-gray-50 hover:bg-gray-50 hover:dark:bg-black text-slate-800 dark:text-white border-2 border-gray-400 py-2 px-4  text-xs lg:text-base dark:shadow-[inset_-12px_-8px_40px_#46464620] shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)]">
+                        PonderPageAI is built with these tools..
+                    </Badge>
+
+                    <div className="flex flex-row w-[80%] justify-evenly items-center  ">
+                        <div className="w-[18%] lg:w-44 h-32 rounded-3xl ">
+                            <Link href="https://nextjs.org">
+                                <img
+                                    src="/nextjs_logo.jpg"
+                                    className="h-full w-full object-contain dark:invert"
+                                />
+                            </Link>
+                        </div>
+                        <div className="w-[18%] lg:w-44 h-[10%] lg:h-12 rounded-3xl">
+                            <Link href="https://firebase.google.com">
+                                <img
+                                    src="/firebase.png"
+                                    className="h-full w-full  object-fit dark:invert"
+                                />
+                            </Link>
+                        </div>
+                        <div className="w-[18%] lg:w-40 h-[12%] lg:h-20 rounded-3xl">
+                            <Link href="https://ui.shadcn.com">
+                                <img
+                                    src="/shadcn.png"
+                                    className="h-full w-full  object-fit invert dark:invert-0"
+                                />
+                            </Link>
+                        </div>
+                        <div className="w-[18%] lg:w-32 h-[10%] lg:h-16 rounded-3xl">
+                            <Link href="https://www.stripe.com">
+                                <img
+                                    src="/stripe_logo.png"
+                                    className="h-full w-full object-fit dark:invert"
+                                />
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="w-screen items-center text-center pb-2 text-sm lg:text-base">
+                <p>© 2023 TranslateSphere. All rights reserved.</p>
+                <p>
+                    Crafted with love by{" "}
+                    <Link
+                        href="https://www.senaabhishek.com"
+                        className="text-cyan-400"
+                    >
+                        Sena✨
+                    </Link>
+                </p>
             </div>
         </main>
     );
