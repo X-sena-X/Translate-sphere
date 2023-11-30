@@ -10,7 +10,7 @@ const page = async (props: Props) => {
     const handlePayment = async () => {};
 
     return (
-        <div className="min-w-full h-fit lg:h-full items-center flex flex-col justify-center lg:gap-y-20 gap-y-10 py-10 bg-[conic-gradient(at_bottom,_var(--tw-gradient-stops))] from-slate-900 via-purple-900 to-slate-900 ">
+        <div className="min-w-full h-fit lg:h-full items-center flex flex-col justify-center lg:gap-y-20 gap-y-10 py-10 dark:bg-[conic-gradient(at_bottom,_var(--tw-gradient-stops))] dark:from-slate-900 dark:via-purple-900 dark:to-slate-900 bg-white">
             <div className="flex flex-col lg:w-[40%] w-[90%] items-center gap-y-2">
                 <p className="flex text-2xl lg:text-4xl font-medium text-violet-500">
                     Pricing

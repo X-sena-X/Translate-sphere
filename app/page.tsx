@@ -56,7 +56,7 @@ export default async function Home() {
                             <div className="-m-2 rounded-xl Obg-gray-908/5 p-2 ring-1 ring-inset ring-gray-988/10 1g:-m-4 1g: rounded-2x1 1g:p-4">
                                 <Image
                                     unoptimized
-                                    src={"DemoGif"}
+                                    src="demo.gif"
                                     alt="App screenshot"
                                     width={2432}
                                     height={1442}
